@@ -1,55 +1,49 @@
+<!-- This page is the main entry point and handles the routing -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="Images/favicon.jpg">
-    <link rel="stylesheet" href="src/style.css">
-    <title>CareerSort: AI Job Search Engine</title>
+    <link rel="stylesheet" href="pages/style.css">
+    <!-- CareerSort: AI Job Search Engine -->
+    <title>CareerSort</title> <!-- make this dynamic later -->
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
-        <a href="index.php">Home</a>
-        <a href="jobs.php">Jobs</a>
-        <a href="tailor.php">Tailor Application</a>
+        <a href="?page=home">Home</a>
+        <a href="?page=jobs">Jobs</a>
+        <a href="?page=tailor">Tailor Application</a>
         <div class="logo-container">
             <img src="Images/logo-black.png" alt="">
         </div>
-        <a href="privacy.php">Privacy</a>
-        <a href="faq.php">FAQ</a>
+        <a href="?page=privacy">Privacy</a>
+        <a href="?page=faq">FAQ</a>
         <div>
             <a href="#" class="log-in-link">Log In</a>
             <a href="#" class="sign-up-button">Sign Up</a>
         </div>
     </nav>
 
-    <section class="hero-section fit-navbar-section">
-        <div class="hero-text-box">
-            <h1 class="heading-primary">
-                Find Your Dream Job, Faster, Smarter, Better
-            </h1>
-            <p class="hero-description">
-                Streamline Your Job Hunt from Start to Finish with AI Assistance.
-            </p>
-            <a href="#" class="cta-button">
-                ⚡️ Accelerate Job Hunt
-            </a>
-        </div>
-        <div class="hero-img-box">
-            <img
-            src="Images/pexels-andrea-piacquadio-927451.jpg"
-            alt="Image could not be loaded"
-            class="hero-img"
-            />
-        </div>
-    </section>
+    <!-- Page routing -->
+    <?php
+        $page = isset($_GET['page']) ? $_GET['page'] : 'home';
+        
+        // Define an array of all website pages
+        $pages = ['home', 'jobs', 'tailor', 'privacy', 'faq'];
 
-    <section class="overview-section">
-        <h1 class="overview-heading">How it Works</h1>
-        <br>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta tenetur sapiente dolores odit, eveniet consectetur? Cumque amet magni eum accusamus eius commodi officiis veritatis nostrum, esse nulla excepturi asperiores minus!</p>
-    </section>
+        // Check if the requested page is allowed
+        if (in_array($page, $pages)) {
+            include('pages/' . $page . '.php');
+        } else {
+            echo '<h1>404 - Page Not Found</h1>';
+            // Error page content for invalid page requests
+        }
+    ?>
 
+    <!-- footer -->
     <footer>
         <div class="footer-logo-container">
             <img src="Images/logo-white.png" alt="">
@@ -60,9 +54,9 @@
             <p>email: fake-address@email.com</p>
         </div>
         <div class="navigation-links-container">
-            <a href="jobs.php"><u>Jobs</u></a><br>
-            <a href="privacy.php"><u>Privacy</u></a><br>
-            <a href="faq.php"><u>FAQ</u></a>
+            <a href="?page=jobs"><u>Jobs</u></a><br>
+            <a href="?page=privacy"><u>Privacy</u></a><br>
+            <a href="?page=faq"><u>FAQ</u></a>
         </div>
     </footer>
 </body>
