@@ -1,63 +1,56 @@
-<!-- This page is the main entry point and handles the routing -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="Images/favicon.jpg">
-    <link rel="stylesheet" href="pages/style.css">
-    <!-- CareerSort: AI Job Search Engine -->
-    <title>CareerSort</title> <!-- make this dynamic later -->
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <a href="?page=home">Home</a>
-        <a href="?page=jobs">Jobs</a>
-        <a href="?page=tailor">Tailor Application</a>
-        <div class="logo-container">
-            <img src="Images/logo-black.png" alt="">
-        </div>
-        <a href="?page=privacy">Privacy</a>
-        <a href="?page=faq">FAQ</a>
-        <div>
-            <a href="#" class="log-in-link">Log In</a>
-            <a href="#" class="sign-up-button">Sign Up</a>
-        </div>
-    </nav>
+<?php
+session_start();
 
-    <!-- Page routing -->
-    <?php
-        $page = isset($_GET['page']) ? $_GET['page'] : 'home';
-        
-        // Define an array of all website pages
-        $pages = ['home', 'jobs', 'tailor', 'privacy', 'faq'];
+include("database/connection.php");
+include("database/functions.php");
 
-        // Check if the requested page is allowed
-        if (in_array($page, $pages)) {
-            include('pages/' . $page . '.php');
-        } else {
-            echo '<h1>404 - Page Not Found</h1>';
-            // Error page content for invalid page requests
-        }
-    ?>
+// Get the requested path from the URL
+$request_uri = $_SERVER['REQUEST_URI'];
 
-    <!-- footer -->
-    <footer>
-        <div class="footer-logo-container">
-            <img src="Images/logo-white.png" alt="">
-        </div>
-        <div class="contact-container">
-            <h3>Questions?</h3>
-            <br>
-            <p>email: fake-address@email.com</p>
-        </div>
-        <div class="navigation-links-container">
-            <a href="?page=jobs"><u>Jobs</u></a><br>
-            <a href="?page=privacy"><u>Privacy</u></a><br>
-            <a href="?page=faq"><u>FAQ</u></a>
-        </div>
-    </footer>
-</body>
-</html>
+// Remove any query parameters from the URL
+$request_uri = strtok($request_uri, '?');
+
+// Routes to (non-registered users)
+$landing_pages = [
+    '/' => 'pages/non-registered/home.php',
+    '/jobs' => 'pages/non-registered/jobs.php',
+    '/tailor-application' => 'pages/non-registered/tailor-application.php',
+    '/faq' => 'pages/non-registered/faq.php',
+    '/privacy' => 'pages/non-registered/privacy.php'
+];
+
+// Routes to authentication pages 
+$auth_pages = [
+    '/signup' => 'pages/non-registered/signup.php',
+    '/login' => 'pages/non-registered/login.php'
+];
+
+// Routes to pages for registered users
+$registered_pages = [
+    '/jobsboard' => 'pages/registered/jobsboard.php',
+    '/applied-jobs' => 'pages/registered/applied-jobs.php',
+    '/saved-jobs' => 'pages/registered/saved-jobs.php'
+];
+
+// check that registered users can only go to the pages for registered users
+if (!is_null(get_logged_user($conn))) {
+    if(array_key_exists($request_uri, $registered_pages)) {
+        include $registered_pages[$request_uri];
+    }
+    else {
+        header("Location: /jobsboard");
+    }
+}
+// Check if the requested path exists in one of the route arrays
+else if (array_key_exists($request_uri, $landing_pages)) {
+    include 'includes/header.php'; // include header and navbar
+    include $landing_pages[$request_uri];
+    include 'includes/footer.php'; // include footer
+} 
+else if (array_key_exists($request_uri, $auth_pages)) {
+    include $auth_pages[$request_uri];
+    include 'includes/footer.php'; // include footer
+}
+else {
+    echo "<b>404 error</b><br>This page does not exist.";
+}
