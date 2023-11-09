@@ -68,3 +68,25 @@ CREATE TABLE Job_Postings (
     salary DECIMAL(10, 2),
     post_date DATE
 );
+
+CREATE TABLE companies (
+    company_id INT AUTO_INCREMENT PRIMARY KEY,
+    company_name VARCHAR(255) NOT NULL,
+    thumbnail_link VARCHAR(255),
+    website VARCHAR(255)
+);
+
+CREATE TABLE apply_options (
+    apply_option_id INT AUTO_INCREMENT PRIMARY KEY,
+    link VARCHAR(255),
+    job_id INT NOT NULL,
+    FOREIGN KEY (job_id) REFERENCES jobs(job_id)
+);
+
+CREATE TABLE job_highlights (
+    job_highlight_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    job_id INT NOT NULL,
+    FOREIGN KEY (job_id) REFERENCES jobs(job_id)
+);
