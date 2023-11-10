@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <title>Sign Up</title>
 </head>
 <body>
-	<a href="/">&larr; Home</a>
     <h1>Sign Up</h1>
     <form method="post">
         <input id="text" type="text" name="username" placeholder="username"><br><br>
