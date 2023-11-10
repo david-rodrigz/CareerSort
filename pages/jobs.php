@@ -1,8 +1,13 @@
 <?php
-include 'database/connection.php';
-require 'apis/google-search-results.php';
-require 'apis/restclient.php';
+session_start();
+include '../database/connection.php';
+include '../database/functions.php';
+require '../apis/google-search-results.php';
+require '../apis/restclient.php';
 
+if (is_null(get_logged_user($conn))) {
+    header('Location: login.php');
+}
 
 $job_data = NULL;
 $jobs_results = NULL;

@@ -1,5 +1,11 @@
 <?php 
-include("database/connection.php");
+session_start();
+include '../database/connection.php';
+include '../database/functions.php';
+
+if (!is_null(get_logged_user($conn))) {
+	header('Location: jobs.php');
+}
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	//something was posted
@@ -22,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 				$storedHashedPassword = $user_data['password'];
 				if (password_verify($password, $storedHashedPassword)) {
 					$_SESSION['user_id'] = $user_data['user_id'];
-					header("Location: /job-board");
+					header("Location: jobs.php");
 					die;
 				}
 			}
@@ -51,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <input id="button" type="submit" value="Login"><br><br>
 
-        <a href="/signup">Create a Free Account</a>
+        <a href="signup.php">Create a Free Account</a>
     </form>
 </body>
 </html>

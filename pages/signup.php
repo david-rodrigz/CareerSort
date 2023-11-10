@@ -1,5 +1,11 @@
 <?php 
-include("database/connection.php");
+session_start();
+include("../database/connection.php");
+include '../database/functions.php';
+
+if (!is_null(get_logged_user($conn))) {
+	header('Location: jobs.php');
+}
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	//something was posted
@@ -21,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 		mysqli_query($conn, $query);
 
-		header("Location: /login");
+		header("Location: login.php");
 		die;
 	}
 }
@@ -42,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <input id="button" type="submit" value="Create Free Account"><br><br>
 
-		<p>Already a member? <a href="/login">Log In</a></p>
+		<p>Already a member? <a href="login.php">Log In</a></p>
     </form>
 </body>
 </html>
