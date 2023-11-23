@@ -1,5 +1,4 @@
 function displayJobPost(i) {
-    console.log(i);
     // reset display of all other job posts to none
     const jobPosts = document.getElementsByClassName("job-post");
     for (j = 0; j < jobPosts.length; j++) {
@@ -12,6 +11,28 @@ function displayJobPost(i) {
     jobPost.style.display = "block";
 }
 
+function bookmarkJob(i, iconNumber) {
+    const bookmark = document.getElementById(`bookmark${i}`);
+    const icon = bookmark.firstChild;
+
+    if (iconNumber == 1) { // indicates that this job is NOT saved
+        icon.src = `../Images/bookmark-icon2.svg`;
+        // save job
+        document.cookie = `job${i}=true`;
+    }
+    else { // indicates that this job is saved
+        icon.src = `../Images/bookmark-icon1.svg`;
+        // unsave job
+        document.cookie = `job${i}=false`;
+    }
+}
+
+window.addEventListener('beforeunload', function (e) {
+});
+
+/**
+ * Dynamically adjust the size of job filters based on their content.
+ */
 const filters = document.getElementsByClassName("filter");
 for (i = 0; i < filters.length; i++) {
     const width = filters[i].firstElementChild.innerHTML.length;

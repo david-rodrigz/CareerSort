@@ -9,22 +9,23 @@ if (is_null(get_logged_user($conn))) {
     header('Location: login.php');
 }
 
-$job_data = NULL;
-$jobs_results = NULL;
+$data_file = file_get_contents('../json_data.json');
+$job_data = json_decode($data_file, true);
+$jobs_results = $job_data['jobs_results'];
 
-if (isset($_POST['job-title']) || isset($_POST['location'])) {
-    $query = [
-     "engine" => "google_jobs",
-     "q" => ($_POST['job-title'] . " " . $_POST['location']),
-     "google_domain" => "google.com",
-     "hl" => "en",
-    ];
+// if (isset($_POST['job-title']) || isset($_POST['location'])) {
+//     $query = [
+//      "engine" => "google_jobs",
+//      "q" => ($_POST['job-title'] . " " . $_POST['location']),
+//      "google_domain" => "google.com",
+//      "hl" => "en",
+//     ];
     
-    $search = new GoogleSearchResults(getenv('SERP_API'));
-    $result = json_encode($search->get_json($query));
-    $job_data = json_decode($result, true);
-    $jobs_results = $job_data['jobs_results'];
-}
+//     $search = new GoogleSearchResults(getenv('SERP_API'));
+//     $result = json_encode($search->get_json($query));
+//     $job_data = json_decode($result, true);
+//     $jobs_results = $job_data['jobs_results'];
+// }
 
 if (isset($_SESSION['user_id']) && isset($job_data) && isset($_GET['saved']) && isset($_GET['job'])) {
     $saved = $_GET['saved'];
@@ -143,7 +144,7 @@ if (isset($_SESSION['user_id']) && isset($job_data) && isset($_GET['saved']) && 
             if (isset($job_data)) {
                 $i = 0;
                 foreach ($jobs_results as $job) {
-                    echo "<button class=\"job-list-option\" onclick=\"displayJobPost($i)\">";
+                    echo "<a class=\"job-list-option\" onclick=\"displayJobPost($i)\">";
                     echo "<div>";
                     echo "<h3>" . $job['title'] . "</h3><br>";
                     echo "<p>" . $job['company_name'] . "</p>";
@@ -152,20 +153,20 @@ if (isset($_SESSION['user_id']) && isset($job_data) && isset($_GET['saved']) && 
                         echo "<p>" . $e . "</p>";
                     }
                     echo "</div>";
-                    echo "<div class=\"save-icon-container\">";
+                    echo "<div class=\"bookmark-container\">";
                     $job_query = "SELECT job_id FROM jobs WHERE job_id = '" . substr($job['job_id'], 0, 700) . "';";
                     $result = mysqli_query($conn, $job_query);
                     // display bookmark-icon2.svg if this job is already saved
                     // else display bookmark-icon1.svg
-                    $bookmark = "bookmark-icon1";
+                    $icon = 1;
                     if (mysqli_num_rows($result) > 0) {
-                        $bookmark = "bookmark-icon2";
+                        $icon = 2;
                     }
-                    // pass in parameters to href: saved={1|0} and job={job index}
-                    echo "<a href=\"{$_SERVER['REQUEST_URI']}?saved=" . (mysqli_num_rows($result) > 0 ? "1" : "0") 
-                        . "&job=$i\"><img src=\"../Images/$bookmark.svg\"></img></a>";
+                    echo "<button id=\"bookmark$i\" class=\"bookmark-btn\" onclick=\"bookmarkJob($i, $icon)\">
+                        <img class=\"bookmark-icon\" src=\"../Images/bookmark-icon$icon.svg\"></img>
+                        </button>";
                     echo "</div>";
-                    echo "</button>";
+                    echo "</a>";
                     $i++;
                 }
             }

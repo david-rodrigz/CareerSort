@@ -276,12 +276,19 @@ footer .contact-container,
 
 }
 
-.save-icon-container {
+.bookmark-container {
     display: flex;
     justify-content: end;
 }
 
-.save-icon-container a img {
+.bookmark-btn {
+    height: 2rem;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.bookmark-icon {
     width: 1.4rem;
 }
 
