@@ -38,3 +38,26 @@ for (i = 0; i < filters.length; i++) {
     const width = filters[i].firstElementChild.innerHTML.length;
     filters[i].style.width = (width > 5 ? width*0.75 : width*1.2) + "rem";
 }
+
+$(document).ready(function() {
+    // When button is clicked
+    $(".bookmark-btn").click(function() {
+        // Use AJAX to save the job
+        $.ajax({
+            type: "POST",
+            url: "save-job.php",
+            data: {
+                job_id: $(this).attr("id")
+            },
+            success: function(data) {
+                // Update the button
+                if (data == "true") {
+                    $(this).html("Unsave Job");
+                }
+                else {
+                    $(this).html("Save Job");
+                }
+            }
+        });
+    });
+});
