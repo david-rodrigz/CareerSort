@@ -30,6 +30,7 @@ function display_job_entry($job, $i) {
     // Saves job if not already saved, else deletes it
     $job_id = "id=\"job-post-{$i}\"";
     $onclick = "onclick=\"saveJob({$i}, {$isSaved}, '{$job_data}')\"";
-    echo "<button class=\"save-job-btn\" {$job_id} {$onclick}>Save Job{$i}</button><br>";
+    $btn_text = $isSaved == "true" ? "Unsave Job" : "Save Job";
+    echo "<button class=\"save-job-btn\" {$job_id} {$onclick}>{$btn_text} {$i}</button><br>";
 }
 ?>

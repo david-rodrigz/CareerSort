@@ -30,20 +30,22 @@ load_data($data_file);
                 data: {job_data: jobData},
                 success: function(response) {
                     console.log(response);
-                    console.log(`#job-post-${jobResultId}`);
+
+                    // escape characters that need to be escaped
+                    jobDataStr = addslashes(jobDataStr);
 
                     // get button
                     const btn = $(`#job-post-${jobResultId}`);
 
                     if(response == "saved") {
                         // change button text
-                        btn.text("Unsave Job");
-                        btn.attr("onclick", `saveJob("true", '${jobDataStr}')`);
+                        btn.text(`Unsave Job ${jobResultId}`);
+                        btn.attr("onclick", `saveJob(${jobResultId}, true, '${jobDataStr}')`);
                     }
                     else if(response == "unsaved") {
                         // change button text
-                        btn.text("Save Job");
-                        btn.attr("onclick", `saveJob("false", '${jobDataStr}')`);
+                        btn.text(`Save Job ${jobResultId}`);
+                        btn.attr("onclick", `saveJob(${jobResultId}, false, '${jobDataStr}')`);
                     }
                     else {
                         console.error(response);
@@ -53,6 +55,17 @@ load_data($data_file);
                     console.error(error);
                 }
             });
+        }
+
+        function addslashes(string) {
+            return string.replace(/\\/g, '\\\\').
+                replace(/\u0008/g, '\\b').
+                replace(/\t/g, '\\t').
+                replace(/\n/g, '\\n').
+                replace(/\f/g, '\\f').
+                replace(/\r/g, '\\r').
+                replace(/'/g, '\\\'').
+                replace(/"/g, '\\"');
         }
     </script>
     <title>Job Board</title>
