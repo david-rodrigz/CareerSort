@@ -7,10 +7,8 @@ $data_file = file_get_contents('json_data.json');
 load_data($data_file);
 
 // set job_data based on previous search
-// if (isset($_COOKIE['job_data'])) {
-//     $job_data = json_decode($_COOKIE['job_data'], true);
-//     $job_query = $job_data['search_parameters']['q'];
-//     get_new_job_data($job_query);
+// if (isset($_SESSION['last_search'])) {
+//     get_new_job_data($_SESSION['last_search']);
 // }
 ?>
 <!DOCTYPE html>
@@ -20,17 +18,39 @@ load_data($data_file);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
-        function saveJob(isSaved, jobId) {
+        function saveJob(jobResultId, isSaved, jobDataStr) {
+            const jobData = JSON.parse(jobDataStr);
+
+            // add isSaved to jobData
+            jobData.isSaved = isSaved;
+
             $.ajax({
                 url: '/requests/jobs/save_job.php',
                 type: 'POST',
-                data: {
-                    isSaved: isSaved,
-                    jobId: jobId
-                },
-                success: function (response) {
+                data: {job_data: jobData},
+                success: function(response) {
                     console.log(response);
-                    $(`#saved-status-${jobId}`).text(" " + response);
+                    console.log(`#job-post-${jobResultId}`);
+
+                    // get button
+                    const btn = $(`#job-post-${jobResultId}`);
+
+                    if(response == "saved") {
+                        // change button text
+                        btn.text("Unsave Job");
+                        btn.attr("onclick", `saveJob("true", '${jobDataStr}')`);
+                    }
+                    else if(response == "unsaved") {
+                        // change button text
+                        btn.text("Save Job");
+                        btn.attr("onclick", `saveJob("false", '${jobDataStr}')`);
+                    }
+                    else {
+                        console.error(response);
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
                 }
             });
         }
@@ -39,7 +59,7 @@ load_data($data_file);
 </head>
 <body>
     <?php
-    if (isset($_COOKIE['job_data'])) {
+    if (isset($job_data)) {
         // display jobs
         require 'jobs_results.php';
     }

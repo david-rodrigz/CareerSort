@@ -1,24 +1,21 @@
 <?php
 require '../../database/connection.php';
-require 'JobData.php';
-
-// Retrieve job data from cookie
-$job_data = json_decode($_COOKIE['job_data'], true);
-$jobs_results = $job_data['jobs_results'];
 
 // Check if the request is a POST request
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $isSaved = $_POST['isSaved'];
-    $job_i = $_POST['jobId'];
-    
+    $job_data = $_POST['job_data'];
+
     // gather JSON job data
-    $title = str_replace("'", "\'", $jobs_results[$job_i]['title']);
-    $company_name = str_replace("'", "\'", $jobs_results[$job_i]['company_name']);
-    $location = str_replace("'", "\'", $jobs_results[$job_i]['location']);
-    $description = str_replace("'", "\'", $jobs_results[$job_i]['description']);
-    $user_id = $_SESSION['user_id']; // for debugging (change this later)
-    $job_id = substr($jobs_results[$job_i]['job_id'], 0, 700);
-    $job_highlights = $jobs_results[$job_i]['job_highlights'];
+    $title = str_replace("'", "\'", $job_data['title']);
+    $company_name = str_replace("'", "\'", $job_data['company_name']);
+    $location = str_replace("'", "\'", $job_data['location']);
+    $description = str_replace("'", "\'", $job_data['description']);
+    $job_id = substr($job_data['job_id'], 0, 700);
+    $job_highlights = $job_data['job_highlights'];
+
+    // get user id from session
+    // $user_id = $_SESSION['user_id']; // for debugging (change this later)
+    $user_id = 2; // for debugging (change this later)
     
     // insert company only if it does not alreadty exist in database 
     // check if company arleady exists
@@ -26,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         . "'$company_name';";
     
     // save job data if not already saved, else delete it
-    if (!$isSaved) {
+    if ($job_data['isSaved'] == "false") {
         if (mysqli_num_rows(mysqli_query($conn, $company_q)) == 0) {
-            $thumbnail_link = $jobs_results[$job_i]['thumbnail'];
-            $website = count($jobs_results[$job_i]['related_links']) > 0
-                ? $jobs_results[$job_i]['related_links'][0]['link'] : "";
+            $thumbnail_link = $job_data['thumbnail'];
+            $website = count($job_data['related_links']) > 0
+                ? $job_data['related_links'][0]['link'] : "";
             $insert_company = "INSERT INTO companies (company_name, thumbnail_link, website) "
                 . "VALUES ('$company_name', '$thumbnail_link', '$website');";
             mysqli_query($conn, $insert_company);

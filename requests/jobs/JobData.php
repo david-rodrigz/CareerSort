@@ -1,15 +1,21 @@
 <?php
 
-$search_query = NULL;
+$job_data = NULL;
 $page = 1;
 
 // for debugging (change this later)
 function load_data($data) {
-    setcookie('job_data', $data, time() + (86400 * 30), '/');
-    $_COOKIE['job_data'] = $data;
+    global $job_data;
+    $job_data = json_decode($data, true);
 }
 
 function get_new_job_data($search_query) {
+    global $job_data, $page;
+
+    // Save search query to session
+    $_SESSION['last_search'] = $search_query;
+    $page = 1;
+
     // Load data from API
     $query = [
         "engine" => "google_jobs",
@@ -18,31 +24,28 @@ function get_new_job_data($search_query) {
         "hl" => "en"
     ];
     
-    // Save data to cookie
+    // Set job data
     $search = new GoogleSearchResults(getenv('SERP_API'));
     $result = json_encode($search->get_json($query));
-    setcookie('job_data', $result, time() + (86400 * 30), '/');
-    $_COOKIE['job_data'] = $result;
+    $job_data = json_decode($result, true);
 }
 
-function load_more_jobs($page) {
-    // Retrieve job query from cookie
-    $job_data = json_decode($_COOKIE['job_data'], true);
-    $job_query = $job_data['search_parameters']['q'];
-
-    // Load data from the requested page of results from API
+function load_more_jobs() {
+    global $job_data, $page;
+    
+    // Load next page of results from API
+    $page++;
     $query = [
     "engine" => "google_jobs",
-    "q" => ($job_query),
+    "q" => ($job_data['search_parameters']['q']),
     "google_domain" => "google.com",
     "hl" => "en",
     "start" => ($page * 10)
     ];
     
+    // Append new jobs to job_data
     $search = new GoogleSearchResults(getenv('SERP_API'));
     $result = json_encode($search->get_json($query));
-    
-    // Append new jobs to job_data
     $new_job_data = json_decode($result, true);
-    $_COOKIE['job_data'] = json_encode(array_merge_recursive($job_data, $new_job_data));
+    $job_data['jobs_results'] = array_merge($job_data['jobs_results'], $new_job_data['jobs_results']);
 }
