@@ -18,6 +18,13 @@ load_data($data_file);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
+        $(window).scroll(function() {
+            if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                console.log("bottom");
+                // ajax call get data from server and append to the div
+            }
+        });
+
         function saveJob(jobResultId, isSaved, jobDataStr) {
             const jobData = JSON.parse(jobDataStr);
 
@@ -82,5 +89,7 @@ load_data($data_file);
         echo "<h3>Start getting hired!</h3>";
     }
     ?>
+    <!-- make a div large enough to scroll -->
+    <div style="height: 1000px;"></div>
 </body>
 </html>
