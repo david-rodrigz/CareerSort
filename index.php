@@ -37,17 +37,39 @@ $router->addRoute('GET', '/login', $checkNotAuthenticated, function () {
 $router->addRoute('POST', '/login', $checkNotAuthenticated, function () {
     global $database;
 
+    // Retrieve username and password from POST request
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Check that username and password are not empty
+    if (empty($username) || empty($password)) {
+		$error = empty($username) && empty($password) ? "Username and password are required." 
+            : (empty($username) ? "Username is required."
+            : "Password is required.");
+        
+        $username = htmlspecialchars($username);
+        $password = htmlspecialchars($password);
+        include 'app/views/signup.php';
+        exit;
+	}
+
+    // Escape username and password for security
     $username = str_replace("'", "\'", $_POST['username']);
 	$password = str_replace("'", "\'", $_POST['password']);
 
-	if (!empty($username) && !empty($password) && !is_numeric($username)) {
-        if($database->login($username, $password)) {
-            header("Location: /dashboard");
-            exit;
-        }
+    // Validate login credentials
+	if ($database->login($username, $password)) {
+        header("Location: /dashboard");
+        exit;
     }
 
-    echo "<p class=\"error-message\">Invalid username or password.</p>";
+    // Revert escaped apostrophes and escape HTML characters
+    $username = str_replace("\'", "'", $_POST['username']);
+    $username = htmlspecialchars($username);
+	$password = str_replace("/'", "'", $_POST['password']);
+    $password = htmlspecialchars($password);
+    $error = "Incorrect username or password.";
+    include 'app/views/login.php';
     exit;
 });
 
@@ -61,19 +83,30 @@ $router->addRoute('GET', '/signup', $checkNotAuthenticated, function () {
 $router->addRoute('POST', '/signup', $checkNotAuthenticated, function () {
     global $database;
 
+    // Retrieve username and password from POST request
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Check that username and password are not empty
+	if (empty($username) || empty($password)) {
+		$error = empty($username) && empty($password) ? "Username and password are required." 
+            : (empty($username) ? "Username is required."
+            : "Password is required.");
+        
+        $username = htmlspecialchars($username);
+        $password = htmlspecialchars($password);
+        include 'app/views/signup.php';
+        exit;
+	}
+
+    // Escape username and password for security
     $username = str_replace("'", "\'", $_POST['username']);
 	$password = str_replace("'", "\'", $_POST['password']);
 
-	if (empty($username)) {
-		echo "<p class=\"error-message\">Please provide a username.</p>";
-	}
-	if (empty($password)) {
-		echo "<p class=\"error-message\">Please provide a password.</pp>";
-	}
-
+    // Create new user
 	if ($database->signup($username, $password)) {
 		header("Location: /login");
-		die;
+		exit;
 	}
 
     exit;
