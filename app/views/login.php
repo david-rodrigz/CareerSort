@@ -1,47 +1,3 @@
-<?php 
-session_start();
-include '../database/connection.php';
-include '../database/functions.php';
-
-if (!is_null(get_logged_user($conn))) {
-	header('Location: jobs.php');
-}
-
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-	//something was posted
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-
-	if (!empty($username) && !empty($password) && !is_numeric($username)) {
-
-		//read from database
-		$query = "SELECT * FROM users WHERE username = '$username' LIMIT 1";
-		$result = mysqli_query($conn, $query);
-
-		if ($result) {
-			if ($result && mysqli_num_rows($result) > 0) {
-
-				$user_data = mysqli_fetch_assoc($result);
-
-				// compare hashed password from database with 
-				// hashed password from user's input
-				$storedHashedPassword = $user_data['password'];
-				if (password_verify($password, $storedHashedPassword)) {
-					$_SESSION['user_id'] = $user_data['user_id'];
-					header("Location: jobs.php");
-					die;
-				}
-			}
-		}
-		
-		echo "wrong username or password!";
-	}
-	else {
-		echo "wrong username or password!";
-	}
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <input id="button" type="submit" value="Login"><br><br>
 
-        <a href="signup.php">Create a Free Account</a>
+        <a href="/signup">Create a Free Account</a>
     </form>
 </body>
 </html>
