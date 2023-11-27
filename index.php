@@ -3,6 +3,14 @@ require 'app/config/database.php';
 include_once "app/middleware/AuthMiddleware.php"; // middleware
 include_once "app/router.php"; // router
 
+// start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+	session_start();
+}
+
+// Create a database connection
+$database = new Database();
+
 // Create a new Router instance
 $router = new Router();
 
@@ -27,38 +35,19 @@ $router->addRoute('GET', '/login', $checkNotAuthenticated, function () {
 
 // login POST request
 $router->addRoute('POST', '/login', $checkNotAuthenticated, function () {
-    global $conn;
+    global $database;
 
-    $username = $_POST['username'];
-	$password = $_POST['password'];
+    $username = str_replace("'", "\'", $_POST['username']);
+	$password = str_replace("'", "\'", $_POST['password']);
 
 	if (!empty($username) && !empty($password) && !is_numeric($username)) {
+        if($database->login($username, $password)) {
+            header("Location: /dashboard");
+            exit;
+        }
+    }
 
-		//read from database
-		$query = "SELECT * FROM users WHERE username = '$username' LIMIT 1";
-		$result = mysqli_query($conn, $query);
-
-		if ($result) {
-			if ($result && mysqli_num_rows($result) > 0) {
-
-				$user_data = mysqli_fetch_assoc($result);
-
-				// compare hashed password from database with 
-				// hashed password from user's input
-				$storedHashedPassword = $user_data['password'];
-				if (password_verify($password, $storedHashedPassword)) {
-					$_SESSION['user_id'] = $user_data['user_id'];
-					header("Location: /dashboard");
-					die;
-				}
-			}
-		}
-		
-		echo "wrong username or password!";
-	}
-	else {
-		echo "wrong username or password!";
-	}
+    echo "<p class=\"error-message\">Invalid username or password.</p>";
     exit;
 });
 
@@ -70,29 +59,23 @@ $router->addRoute('GET', '/signup', $checkNotAuthenticated, function () {
 
 // signup POST request
 $router->addRoute('POST', '/signup', $checkNotAuthenticated, function () {
-    global $conn;
+    global $database;
 
-    $username = $_POST['username'];
-	$password = $_POST['password'];
-
-	// hash password for security
-	$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    $username = str_replace("'", "\'", $_POST['username']);
+	$password = str_replace("'", "\'", $_POST['password']);
 
 	if (empty($username)) {
-		echo "<p class=\"error message\">Please provide a username.</p>";
+		echo "<p class=\"error-message\">Please provide a username.</p>";
 	}
-	else if (empty($password)) {
-		echo "<p class=\"error message\">Please provide a password.</pp>";
+	if (empty($password)) {
+		echo "<p class=\"error-message\">Please provide a password.</pp>";
 	}
-	else {
-		// add user to database
-		$query = "INSERT INTO users (username,password) VALUES ('$username','$hashedPassword')";
 
-		mysqli_query($conn, $query);
-
+	if ($database->signup($username, $password)) {
 		header("Location: /login");
 		die;
 	}
+
     exit;
 });
 
