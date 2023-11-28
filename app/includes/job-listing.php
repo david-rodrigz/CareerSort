@@ -30,7 +30,7 @@ $job_json = str_replace("&#039;", "\\&#039;", $job_json);
             <p><?= $extension ?></p>
         <?php endforeach; ?>
     </div>
-    <div class="job-listing-bookmark-container">
+    <div class="bookmark-container">
         <img src="public/images/<?= $bookmark_icon ?>" class="bookmark-icon" 
         id="bookmark-icon<?= $index ?>" 
         onclick="bookmark(<?= $index ?>, <?= $is_saved ?>,'<?= $job_json ?>')"></img>

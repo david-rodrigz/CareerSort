@@ -22,7 +22,7 @@ if (isset($job_data)) {
     <title>Search Jobs</title>
 </head>
 <body>
-    <a href="../logout">Log Out</a>
+    <a href="/logout">Log Out</a>
     <form method="post">
         <div class="search-container">
             <!-- Job query goes here -->
@@ -80,6 +80,7 @@ if (isset($job_data)) {
                 ?>
             </div>
         <?php else: ?>
+            <br>
             <h3 class="no-search-message"><i>No search results yet.</i></h3>
         <?php endif; ?>
     </div>

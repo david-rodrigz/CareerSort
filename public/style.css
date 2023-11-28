@@ -50,7 +50,7 @@
     flex-direction: column;
 }
 
-.job-list-option {
+.job-listing-container {
     cursor: pointer;
     display: grid;
     grid-template-columns: 4fr 1fr;
@@ -62,12 +62,12 @@
 
 }
 
-.save-icon-container {
+.bookmark-container {
     display: flex;
     justify-content: end;
 }
 
-.save-icon-container a img {
+.bookmark-container img {
     width: 1.4rem;
 }
 
