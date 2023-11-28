@@ -1,9 +1,15 @@
 <?php
 
-$data_file = file_get_contents('json_data.json');
-$job_data = json_decode($data_file, true);
-$jobs_results = $job_data['jobs_results'];
-$chips = $job_data['chips'];
+$title_input = isset($title_input) ? $title_input : "";
+$location_input = isset($location_input) ? $location_input : "";
+
+if (isset($job_data)) {
+    $jobs_results = $job_data['jobs_results'];
+    $chips = $job_data['chips'];
+
+    $title_input = str_replace("\'", "'", $title_input);
+    $location_input = str_replace("\'", "'", $location_input);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,8 +26,8 @@ $chips = $job_data['chips'];
     <form method="post">
         <div class="search-container">
             <!-- Job query goes here -->
-            <input class="search-bar" type="text" name="job-title" placeholder="Search job title">
-            <input class="search-bar" type="text" name="location" placeholder="Location or remote">
+            <input class="search-bar" type="text" name="job-title" placeholder="Search job title" value="<?= $title_input ?>" required>
+            <input class="search-bar" type="text" name="location" placeholder="Location or remote" value="<?= $location_input ?>">
             <input class="search-btn" type="submit" value="Search">
         </div>
         <div class="filters-container">
@@ -47,31 +53,35 @@ $chips = $job_data['chips'];
     </form>
     <hr>
     <div class="job-board">
-        <!-- This shows all the job search results -->
-        <div class="jobs-list-container">
-            <?php
-            if (isset($job_data)) {
-                $index = 0;
-                foreach ($jobs_results as $job) {
-                    include 'app/includes/job-listing.php';
-                    $index++;
+        <?php if (isset($job_data)): ?>
+            <!-- This shows all the job search results -->
+            <div class="jobs-list-container">
+                <?php
+                if (isset($job_data)) {
+                    $index = 0;
+                    foreach ($jobs_results as $job) {
+                        include 'app/includes/job-listing.php';
+                        $index++;
+                    }
                 }
-            }
-            ?>
-        </div>
+                ?>
+            </div>
 
-        <!-- This shows a full job post -->
-        <div id="job-posts-container">
-            <?php
-            if (isset($job_data)) {
-                $index = 0;
-                foreach($jobs_results as $job) {
-                    include 'app/includes/job-post.php';
-                    $index++;
+            <!-- This shows a full job post -->
+            <div id="job-posts-container">
+                <?php
+                if (isset($job_data)) {
+                    $index = 0;
+                    foreach($jobs_results as $job) {
+                        include 'app/includes/job-post.php';
+                        $index++;
+                    }
                 }
-            }
-            ?>
-        </div>
+                ?>
+            </div>
+        <?php else: ?>
+            <h3 class="no-search-message"><i>No search results yet.</i></h3>
+        <?php endif; ?>
     </div>
     <script src="public/script.js"></script>
 </body>
