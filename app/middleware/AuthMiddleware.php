@@ -20,7 +20,7 @@ $checkAuthenticated = function() {
 
 /**
  * Middleware to check if a user is not authenticated.
- * If user is authenticated, redirect to dashboard page.
+ * If user is authenticated, redirect to jobs page.
  */
 $checkNotAuthenticated = function() {
     global $database;
@@ -32,6 +32,6 @@ $checkNotAuthenticated = function() {
 
     // check if user is authenticated
     if ($database->is_authenticated()) {
-        header("Location: /dashboard");
+        header("Location: /jobs");
     }
 };

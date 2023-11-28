@@ -18,14 +18,7 @@ $router = new Router();
 
 // home route
 $router->addRoute('GET', '/', $checkNotAuthenticated, function () {
-    echo "Welcome to my <b>home</b> page!";
-    exit;
-});
-
-// dashboard route
-$router->addRoute('GET', '/dashboard', $checkAuthenticated, function () {
-    echo "<p><a href='/logout'>Logout</a></p>";
-    echo "Welcome to my <b>dashboard</b> page!";
+    header("Location: /login");
     exit;
 });
 
@@ -103,7 +96,7 @@ $router->addRoute('POST', '/login', $checkNotAuthenticated, function () {
 
     // Validate login credentials
 	if ($database->login($username, $password)) {
-        header("Location: /dashboard");
+        header("Location: /jobs");
         exit;
     }
 
