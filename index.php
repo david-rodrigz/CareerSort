@@ -33,6 +33,20 @@ $router->addRoute('GET', '/login', $checkNotAuthenticated, function () {
     exit;
 });
 
+// jobs route
+$router->addRoute('GET', '/jobs', $checkAuthenticated, function () {
+    global $database;
+    include 'app/views/search_jobs.php';
+    exit;
+});
+
+// jobs POST request
+$router->addRoute('POST', '/bookmark', $checkAuthenticated, function () {
+    global $database;
+    include 'app/controllers/save_job.php';
+    exit;
+});
+
 // login POST request
 $router->addRoute('POST', '/login', $checkNotAuthenticated, function () {
     global $database;

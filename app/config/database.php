@@ -77,4 +77,15 @@ class Database {
 		}
 		return false;
 	}
+
+	// debug: change name or return value
+	public function get_job($job_id) {
+		$conn = $this->get_connection();
+
+		$query = "SELECT * FROM jobs WHERE job_id = '$job_id'";
+
+		$result = $conn->query($query);
+
+		return $result->rowCount();
+	}
 }

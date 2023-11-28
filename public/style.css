@@ -1,223 +1,9 @@
-:root {
-    --nav-bar-height: 100px;
-    --job-filters-height: 80px;
-    --secondary-color: #c19fff;
-}
-
 * {
     padding: 0;
     margin: 0;
     list-style-type: none;
     text-decoration: none;
     box-sizing: border-box;
-}
-
-section {
-    background-color: whitesmoke;
-}
-
-.fit-navbar-section {
-    height: calc(100vh - var(--nav-bar-height));
-}
-
-.navbar,
-section {
-    padding: 0 6rem;
-}
-
-.navbar {
-    max-width: 100%;
-    height: var(--nav-bar-height);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar a {
-    width: 124px;
-    color: black;
-}
-
-.navbar .logo-container {
-    width: 400px;
-    display: flex;
-    justify-content: center;
-}
-
-.navbar .logo-container img {
-    width: 200px;
-    height: auto;
-}
-
-.navbar .log-in-link {
-    text-decoration: underline;
-}
-
-.navbar .sign-up-button {
-    margin-left: 6px;
-    padding: 6px 8px;
-    cursor: pointer;
-    background-color: var(--secondary-color);
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-.hero-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.hero-text-box,
-.hero-img-box {
-    max-width: calc(100% / 2);
-}
-
-.hero-text-box {
-    margin: 0 2rem;
-}
-
-.hero-text-box h1 {
-    font-size: 3rem;
-    letter-spacing: -0.5px;
-    margin-bottom: 1rem;
-}
-
-.hero-text-box p {
-    font-size: 1.2rem;
-    margin-bottom: 3rem;
-}
-
-.hero-text-box .cta-button {
-    display: inline-block;
-    font-size: 1.2rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 9px;
-    padding: 1.4rem 2rem;
-    background-color: #5B00FF;
-    color: white;
-}
-
-.hero-img-box img {
-    width: 100%;
-    height: auto;
-}
-
-.overview-section {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-    background-color: #3B3F45;
-    height: 100vh;
-}
-
-.overview-section .overview-heading {
-    color: var(--secondary-color);
-}
-
-.overview-section p {
-    color: whitesmoke;
-}
-
-.tailor-section {
-    display: flex;
-    justify-content: center;
-}
-
-.tailor-results-contianer {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    border-radius: 14px;
-    border: 1px solid;
-    border-color: darkgray;
-    max-width: 50rem;
-    flex-grow: 1;
-    padding: 0 4rem;
-    margin: 1rem 0;
-}
-
-.tailor-toolbar {
-    margin: 1rem 0;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.tailor-options-drop-down {
-    background-color:lightgray;
-    padding: 2px 2px;
-    border: 1px solid;
-    border-radius: 4px;
-}
-
-.tailor-options-drop-down .drop-down-icon {
-    width: 8px;
-    height: auto;
-}
-
-.tailor-options-list {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
-}
-
-.tailor-options-drop-down:hover .tailor-options-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.output-label {
-    font-style: italic;
-    color: #888;
-}
-
-.ai-generated-content {
-    width: 100%;
-    flex-grow: 1;
-    margin: 1rem 0;
-    padding: 2rem 4rem;
-    background-color:#3B3F45;
-    color: whitesmoke;
-    border-radius: 8px;
-}
-
-.apply-button {
-    width: 4rem;
-    margin-bottom: 1rem;
-    background-color: #5B00FF;
-    color: white;
-}
-
-footer {
-    background-color: #222;
-    padding: 4rem 6rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-.footer-logo-container {
-    width: 200px;
-}
-
-.footer-logo-container img {
-    width: 100%;
-    height: auto;
-}
-
-footer .contact-container,
-.navigation-links-container a {
-    padding-left: 4rem;
-    color: white;
-}
-
-.navigation-links-container a {
-    text-decoration: underline;
 }
 
 .search-container {
@@ -234,7 +20,7 @@ footer .contact-container,
     margin: 0 0.2rem;
 }
 
-.search-container .search-btn {
+.search-btn {
     height: 2.2rem;
     width: auto;
 }
@@ -283,6 +69,10 @@ footer .contact-container,
 
 .save-icon-container a img {
     width: 1.4rem;
+}
+
+.bookmark-icon {
+    cursor: pointer;
 }
 
 #job-posts-container {
