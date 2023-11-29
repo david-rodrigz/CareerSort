@@ -33,6 +33,6 @@ $job_json = str_replace("&#039;", "\\&#039;", $job_json);
     <div class="bookmark-container">
         <img src="public/images/<?= $bookmark_icon ?>" class="bookmark-icon" 
         id="bookmark-icon<?= $index ?>" 
-        onclick="bookmark(<?= $index ?>, <?= $is_saved ?>,'<?= $job_json ?>')"></img>
+        onclick="bookmark(<?= $index ?>, <?= $is_saved ?>,'<?= $job_json ?>')">
     </div>
 </div>

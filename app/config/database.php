@@ -78,7 +78,7 @@ class Database {
 		return false;
 	}
 
-	// debug: change name or return value
+	// TODO: change name or return value
 	public function get_job($job_id) {
 		$conn = $this->get_connection();
 

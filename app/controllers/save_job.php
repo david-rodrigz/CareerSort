@@ -37,7 +37,7 @@ if ($job_data['isSaved'] == "false") {
     $insert_job = "INSERT INTO jobs (job_id, title, location, description, company_name, user_id) "
         . "VALUES (:job_id, :title, :location, :description, :company_name, :user_id);";
     $insert_apply_options = "INSERT INTO apply_options (link, job_id) "
-        . "VALUES ('fake-link.com', :job_id);"; // for debugging (change 'fake-link.com' later)
+        . "VALUES ('fake-link.com', :job_id);"; // TODO: (change 'fake-link.com' later)
     
     // Insert job data into database
     $stmt = $conn->prepare($insert_job);
