@@ -1,7 +1,6 @@
 const filters = document.getElementsByClassName("filter");
 for (i = 0; i < filters.length; i++) {
     const width = filters[i].firstElementChild.innerHTML.trim().length;
-    // filters[i].style.width = (width > 5 ? width*0.75 : width*1.2) + "rem";
     filters[i].style.width = (width > 5 ? width*0.8 : width*1.4) + "rem";
 }
 

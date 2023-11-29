@@ -155,6 +155,11 @@ p {
     display: none;
 }
 
+#job-post0 {
+    /* Display the first job by default */
+    display: block;
+}
+
 .job-post li {
     list-style-type: disc;
     list-style-position: inside;

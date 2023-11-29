@@ -31,7 +31,30 @@ $router->addRoute('GET', '/login', $checkNotAuthenticated, function () {
 // jobs route
 $router->addRoute('GET', '/jobs', $checkAuthenticated, function () {
     global $database;
-    include 'app/views/search_jobs.php';
+    // TODO make a separate controller for this
+    include "app/includes/header.php";
+    include "app/views/search_jobs.php";
+    include "app/includes/footer.php";
+    exit;
+});
+
+// saved jobs route
+$router->addRoute('GET', '/saved', $checkAuthenticated, function () {
+    global $database;
+    // TODO make a separate controller for this
+    include "app/includes/header.php";
+    include "app/views/saved_jobs.php";
+    include "app/includes/footer.php";
+    exit;
+});
+
+// profile route
+$router->addRoute('GET', '/profile', $checkAuthenticated, function () {
+    global $database;
+    // TODO make a separate controller for this
+    include "app/includes/header.php";
+    include "app/views/profile.php";
+    include "app/includes/footer.php";
     exit;
 });
 
@@ -59,7 +82,10 @@ $router->addRoute('POST', '/jobs', $checkAuthenticated, function () {
     $result = json_encode($search->get_json($query));
     $job_data = json_decode($result, true);
 
-    include 'app/views/search_jobs.php';
+    // TODO make a separate controller for this
+    include "app/includes/header.php";
+    include "app/views/search_jobs.php";
+    include "app/includes/footer.php";
     exit;
 });
 
