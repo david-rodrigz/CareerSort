@@ -52,7 +52,7 @@ foreach ($jobs as $job) {
 
 <!-- Job board -->
 <div class="job-board">
-    <?php if (isset($jobs_results)): ?>
+    <?php if (isset($jobs_results) && count($jobs_results) > 0): ?>
         <!-- This shows all the job search results -->
         <div class="jobs-list-container">
             <?php

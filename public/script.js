@@ -49,29 +49,32 @@ function bookmark(jobIndex, isSaved, jobDataStr) {
     // add isSaved to jobData
     jobData.isSaved = isSaved;
 
+    // get bookmark
+    const icon = $(`#bookmark-icon${jobIndex}`);
+
+    // escape characters that need to be escaped
+    jobDataStr = addslashes(jobDataStr);
+
+    // Change icon and onclick function based on whether job is saved
+    if (icon.attr('src') == "public/images/bookmark1.svg") {
+        // change icon to empty bookmark and change onclick function to save
+        icon.attr("src", "public/images/bookmark0.svg");
+        icon.attr("onclick", `bookmark(${jobIndex}, false, '${jobDataStr}')`);
+    }
+    else if (icon.attr('src') == "public/images/bookmark0.svg") {
+        // change icon to filled bookmark and change onclick function to unsave
+        icon.attr("src", "public/images/bookmark1.svg");
+        icon.attr("onclick", `bookmark(${jobIndex}, true, '${jobDataStr}')`);
+    }
+
     $.ajax({
         url: '/bookmark',
         type: 'POST',
         data: {job_data: jobData},
         success: function(response) {
             console.log(response);
-            // escape characters that need to be escaped
-            jobDataStr = addslashes(jobDataStr);
 
-            // get bookmark
-            const icon = $(`#bookmark-icon${jobIndex}`);
-
-            if(response == "saved") {
-                // change icon to filled bookmark and change onclick function to unsave
-                icon.attr("src", "public/images/bookmark1.svg");
-                icon.attr("onclick", `bookmark(${jobIndex}, true, '${jobDataStr}')`);
-            }
-            else if(response == "unsaved") {
-                // change icon to empty bookmark and change onclick function to save
-                icon.attr("src", "public/images/bookmark0.svg");
-                icon.attr("onclick", `bookmark(${jobIndex}, false, '${jobDataStr}')`);
-            }
-            else {
+            if(response != "saved" && response != "unsaved") {
                 console.error(response);
             }
         },
