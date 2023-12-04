@@ -5,8 +5,7 @@ $current_page = $_SERVER['REQUEST_URI'];
 // Navbar links
 $navbar_links = [
     '/jobs' => 'Search Jobs',
-    '/saved' => 'Saved Jobs',
-    '/profile' => 'Profile'
+    '/saved' => 'Saved Jobs'
 ];
 
 // id for active navbar link
