@@ -54,10 +54,10 @@ p {
 }
 
 #navbar-active {
-    background-color: whitesmoke;
+    background-color: #F8F8FF;
     font-weight: 500;
-    color: #306629;
-    border-bottom: solid 2px #306629;
+    color: #3D5A80;
+    border-bottom: solid 2px #3D5A80;
 }
 
 /* =================================== */
@@ -84,6 +84,9 @@ p {
 }
 
 .search-btn {
+    background-color: #121212;
+    color: #fff;
+    font-weight: bold;
     height: 2.2rem;
     max-width: 8rem;
 }
